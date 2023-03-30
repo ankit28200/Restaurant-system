@@ -9,3 +9,36 @@ The system provides two APIs:
 
 If report generation is not complete, return "Running" as the output
 If report generation is complete, return "Complete" along with the CSV file with the following schema: store_id, uptime_last_hour(in minutes), uptime_last_day(in hours), update_last_week(in hours), downtime_last_hour(in minutes), downtime_last_day(in hours), downtime_last_week(in hours) The uptime and downtime reported in the CSV only include observations within business hours. The system extrapolates uptime and downtime based on the periodic polls we have ingested to the entire time interval.
+
+## /trigger_report
+This endpoint triggers the generation of a report from the data provided (stored in the database).
+### Request
+```
+POST /api/trigger_report HTTP/1.1
+```
+### Response
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+    'message': 'Success', 
+    'error_code':200,
+    "report_id": "random_string"
+}
+```
+## /get_report
+This endpoint returns the status of the report or the CSV.
+### Request
+```
+GET /api/get_report?report_id=random_string HTTP/1.1
+```
+### Response
+```
+    HTTP/1.1 200 OK
+    Content-Type: text/csv
+
+    store_id, uptime_last_hour(in minutes), uptime_last_day(in hours), update_last_week(in hours), downtime_last_hour(in minutes), downtime_last_day(in hours), downtime_last_week(in hours)
+    1, 60, 
+
+```
